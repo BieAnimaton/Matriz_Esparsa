@@ -161,6 +161,30 @@ int inserir (int info, int linha, int coluna) {
     }
 }
 
+int remover (int linha, int coluna) {
+    int erro;
+
+    erro = verificar_celula(linha, coluna);
+    if (erro == 0) {
+        return 1; // Não existe elemento
+    }
+
+    Matriz *percorre, *aux;
+
+    percorre = vetor_linha[linha].matriz;
+    while ((percorre != NULL) && ((percorre->matriz_coluna!=coluna) || (percorre->matriz_linha!=linha))) {
+        percorre = percorre->direita;
+    }
+
+    aux = percorre;
+
+    percorre = aux->direita;
+    vetor_linha[linha].matriz = percorre;
+    free(aux);
+
+    return 0;
+}
+
 int main()
 {
     int info;
@@ -170,6 +194,8 @@ int main()
     inserir(56, 7, 8);
     inserir(33, 3, 5);
     inserir(6, 6, 6);
+
+    remover(3, 5);
 
     listar();
 
