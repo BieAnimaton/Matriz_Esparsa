@@ -178,24 +178,154 @@ int remover (int linha, int coluna) {
 
     aux = percorre;
 
-    percorre = aux->direita;
+    percorre = percorre->direita;
     vetor_linha[linha].matriz = percorre;
     free(aux);
 
     return 0;
 }
 
+int soma_linha(int linha, int *total) {
+    Matriz *percorre;
+
+    percorre = vetor_linha[linha].matriz;
+    while (percorre != NULL) {
+        if (percorre->matriz_linha == linha)
+            (*total) += percorre->dado;
+
+        percorre = percorre->direita;
+    }
+
+    return 0;
+}
+
+int quantidade_linha(int linha, int *total) {
+    Matriz *percorre;
+
+    percorre = vetor_linha[linha].matriz;
+    while (percorre != NULL) {
+        if (percorre->matriz_linha == linha)
+            (*total)++;
+
+        percorre = percorre->direita;
+    }
+
+    return 0;
+}
+
+int soma_coluna(int coluna, int *total) {
+    Matriz *percorre;
+
+    percorre = vetor_coluna[coluna].matriz;
+    while (percorre != NULL) {
+        if (percorre->matriz_coluna == coluna)
+            (*total) += percorre->dado;
+
+        percorre = percorre->abaixo;
+    }
+
+    return 0;
+}
+
+int quantidade_coluna(int coluna, int *total) {
+    Matriz *percorre;
+
+    percorre = vetor_coluna[coluna].matriz;
+    while (percorre != NULL) {
+        if (percorre->matriz_coluna == coluna)
+            (*total)++;
+
+        percorre = percorre->abaixo;
+    }
+
+    return 0;
+}
+
+int retornar_dado(int linha, int coluna, int *total) {
+    int erro;
+
+    erro = verificar_celula(linha, coluna);
+    if (erro == 0) {
+        return 1; // Não existe elemento
+    }
+
+    Matriz *percorre;
+
+    percorre = vetor_linha[linha].matriz;
+    while ((percorre != NULL) && ((percorre->matriz_coluna!=coluna) || (percorre->matriz_linha!=linha))) {
+        percorre = percorre->direita;
+    }
+
+    (*total) = percorre->dado;
+
+    return 0;
+}
+
+int soma_diagonal_principal(int *total) {
+    int i, tamanho_matriz = 10, linha = 1, coluna = 1, valor;
+
+    for(i = 1; i <= tamanho_matriz; i++) {
+        retornar_dado(linha, coluna, &valor);
+        (*total)+=valor;
+        valor = 0;
+
+        linha++;
+        coluna++;
+    }
+
+    return 0;
+}
+
 int main()
 {
-    int info;
+    int info, total;
 
     inicializar();
 
-    inserir(56, 7, 8);
-    inserir(33, 3, 5);
-    inserir(6, 6, 6);
+    inserir(56, 3, 1);
+    inserir(12, 3, 2);
+    inserir(300, 3, 3);
+    inserir(0, 3, 4);
+    inserir(77, 3, 5);
+    inserir(31, 3, 6);
+    inserir(8, 3, 7);
 
-    remover(3, 5);
+    inserir(90, 1, 8);
+    inserir(3, 2, 8);
+    inserir(13, 3, 8);
+    inserir(5, 5, 8);
+    inserir(200, 7, 8);
+    inserir(43, 8, 8);
+    inserir(5, 9, 8);
+
+    inserir(50, 2, 2);
+    inserir(10, 3, 3);
+    inserir(100, 6, 6);
+    inserir(30, 9, 9);
+
+    quantidade_linha(3, &total);
+    printf("\nA quantidade de elementos da linha 3 : %d", total);
+    total = 0;
+
+    soma_linha(3, &total);
+    printf("\nO total da Linha 3 : %d", total);
+    total = 0;
+
+    quantidade_coluna(8, &total);
+    printf("\nA quantidade de elementos da coluna 8 : %d", total);
+    total = 0;
+
+    soma_coluna(8, &total);
+    printf("\nO total da coluna 8 : %d", total);
+    total = 0;
+
+    retornar_dado(6, 6, &total);
+    printf("\nDado da linha 6 e coluna 6 : %d", total);
+    total = 0;
+
+    soma_diagonal_principal(&total);
+    printf("\nO total da diagonal principal : %d", total);
+    total = 0;
 
     listar();
 
