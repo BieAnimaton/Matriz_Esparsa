@@ -262,7 +262,7 @@ int retornar_dado(int linha, int coluna, int *total) {
 }
 
 int soma_diagonal_principal(int *total) {
-    int i, tamanho_matriz = 10, linha = 1, coluna = 1, valor;
+    int i, tamanho_matriz = 9, linha = 1, coluna = 1, valor;
 
     for(i = 1; i <= tamanho_matriz; i++) {
         retornar_dado(linha, coluna, &valor);
@@ -271,6 +271,21 @@ int soma_diagonal_principal(int *total) {
 
         linha++;
         coluna++;
+    }
+
+    return 0;
+}
+
+int soma_diagonal_secundaria(int *total) {
+    int i, tamanho_matriz = 10, linha = 1, coluna = 9, valor;
+
+    for(i = 1; i <= tamanho_matriz; i++) {
+        retornar_dado(linha, coluna, &valor);
+        (*total)+=valor;
+        valor = 0;
+
+        linha++;
+        coluna--;
     }
 
     return 0;
@@ -290,13 +305,11 @@ int main()
     inserir(31, 3, 6);
     inserir(8, 3, 7);
 
-    inserir(90, 1, 8);
-    inserir(3, 2, 8);
-    inserir(13, 3, 8);
-    inserir(5, 5, 8);
-    inserir(200, 7, 8);
-    inserir(43, 8, 8);
-    inserir(5, 9, 8);
+    inserir(1, 1, 9);
+    inserir(2, 2, 8);
+    inserir(3, 3, 7);
+    inserir(4, 4, 6);
+    inserir(5, 5, 5);
 
     inserir(50, 2, 2);
     inserir(10, 3, 3);
@@ -325,6 +338,10 @@ int main()
 
     soma_diagonal_principal(&total);
     printf("\nO total da diagonal principal : %d", total);
+    total = 0;
+
+    soma_diagonal_secundaria(&total);
+    printf("\nO total da diagonal secundária : %d", total);
     total = 0;
 
     listar();
